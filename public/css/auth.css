@@ -1,0 +1,204 @@
+/* ============================================
+   Authentication Page - Premium Design
+   ============================================ */
+
+:root {
+    --primary: #2563eb;
+    --primary-light: #3b82f6;
+    --primary-dark: #1e40af;
+    --secondary: #10b981;
+    --white: #ffffff;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-900: #111827;
+}
+
+.welcome-strip {
+    background: linear-gradient(90deg, rgba(37, 99, 235, 0.1), rgba(16, 185, 129, 0.1));
+    color: var(--gray-900);
+    padding: 1.5rem 0;
+    text-align: center;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.auth-hero {
+    padding: 4rem 0;
+}
+
+.login-panel {
+    background: var(--white);
+    border-radius: 1.5rem;
+    padding: 3rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e5e7eb;
+}
+
+.login-panel h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: var(--gray-900);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-control {
+    border-radius: 1rem;
+    border: 2px solid #e5e7eb;
+    padding: 0.875rem 1.25rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    outline: none;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: var(--gray-600);
+    font-size: 1.05rem;
+    transition: color 0.3s ease;
+}
+
+.toggle-password:hover {
+    color: var(--primary);
+}
+
+.btn-primary {
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+    padding: 0.875rem 2rem;
+    font-weight: 600;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+}
+
+.carousel-inner {
+    border-radius: 1.5rem;
+    overflow: hidden;
+}
+
+.carousel-inner img {
+    height: 380px;
+    object-fit: cover;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 768px) {
+    .carousel-inner img {
+        height: 220px;
+    }
+
+    .login-panel {
+        padding: 2rem;
+    }
+
+    .login-panel h2 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Password strength indicator */
+#password-requirements {
+    list-style: none;
+    padding: 1rem;
+    background: #f9fafb;
+    border-radius: 0.75rem;
+    margin: 1rem 0;
+    font-size: 0.875rem;
+}
+
+#password-requirements li {
+    padding: 0.5rem 0;
+    color: var(--gray-600);
+    transition: color 0.3s ease;
+}
+
+#password-requirements li.met {
+    color: var(--secondary);
+    font-weight: 600;
+}
+
+#password-strength-bar {
+    height: 6px;
+    background: #e5e7eb;
+    border-radius: 3px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    margin: 1rem 0;
+}
+
+#password-strength-bar::after {
+    content: '';
+    display: block;
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, #ef4444, #f97316, #eab308, #22c55e);
+    transition: width 0.3s ease;
+}
+
+/* Link styling */
+a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+/* Form layout improvements */
+.form-label {
+    font-weight: 600;
+    color: var(--gray-900);
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+/* Register page specific */
+.register-container {
+    max-width: 500px;
+}
+
+.password-field {
+    position: relative;
+}
+
+.form-check {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: rgba(37, 99, 235, 0.05);
+    border-radius: 0.75rem;
+    border-left: 4px solid var(--primary);
+}
+
+.form-check-input {
+    margin-right: 0.5rem;
+}
+
+.form-check-label {
+    color: var(--gray-600);
+    cursor: pointer;
+}

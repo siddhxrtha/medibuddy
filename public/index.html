@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MediBuddy - A caregiver-first medication monitoring platform powered by smart hardware and AI insights.">
+    <title>MediBuddy - Care for your loved ones, even when you're not around</title>
+    <link rel="icon" href="assets/img/logo.png" type="image/png">
+    <!-- Bootstrap CSS & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Google Fonts: Modern Stack -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Site styles -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navbar Component -->
+    <navbar-atag></navbar-atag>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+      <div class="hero-carousel">
+        <div class="carousel-item active" style="background-image: url('https://www.retiregenie.com/wp-content/uploads/2023/06/5.jpg')"></div>
+        <div class="carousel-item" style="background-image: url('https://www.agewellsg.gov.sg/images/what%20is%20age%20well.jpg')"></div>
+        <div class="carousel-item" style="background-image: url('https://mtalvernia.sg/wp-content/uploads/2017/02/geriatric.jpg')"></div>
+        <div class="carousel-item" style="background-image: url('https://mtalvernia.sg/wp-content/uploads/2021/10/All-About-Orthogeriatrics-1.jpg')"></div>
+      </div>
+      <div class="hero-overlay"></div>
+      <div class="container">
+        <div class="hero-content">
+          <h1 class="hero-title">Care for your loved ones, even when you're not around</h1>
+          <p class="hero-subtitle">A caregiver-first medication monitoring platform powered by smart hardware and AI insights.</p>
+          <div class="hero-cta">
+            <a class="btn btn-primary btn-lg" href="#features">Get Started</a>
+            <a class="btn btn-secondary btn-lg" href="#how-it-works">See How It Works</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Problem Statement -->
+    <section class="problem">
+        <div class="container">
+            <div class="section-content">
+                <h2 class="section-title">The caregiver's challenge</h2>
+                <p class="problem-text">
+                    As a caregiver, you're constantly worried about whether your loved ones are taking their medications on time. You check in throughout the day, call to remind them, and lie awake at night wondering if everything is okay. Existing medication apps focus on the elderly user, but you need something different—a solution that gives you peace of mind and reduces your daily stress.
+                </p>
+                <p class="problem-text">
+                    The lack of real-time visibility leaves you feeling anxious and powerless, especially when you're at work or away. You deserve better support.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Overview -->
+    <section class="solution">
+        <div class="container">
+            <h2 class="section-title">MediBuddy + Smart MediBoard</h2>
+            <p class="solution-intro">
+                MediBuddy works together with the Smart MediBoard—an Arduino-based prototype designed specifically for elderly users who need a simple, non-intimidating interface.
+            </p>
+            <div class="solution-details">
+                <div class="solution-feature">
+                    <div class="feature-icon">💡</div>
+                    <h3>LED Medication Alerts</h3>
+                    <p>When it's time for medication, the Smart MediBoard's LED turns on, providing a gentle, visual reminder that's easy to see.</p>
+                </div>
+                <div class="solution-feature">
+                    <div class="feature-icon">✅</div>
+                    <h3>Simple Confirmation Button</h3>
+                    <p>A single button press confirms the medication has been taken. No complex screens, no confusing menus—just one press.</p>
+                </div>
+                <div class="solution-feature">
+                    <div class="feature-icon">📱</div>
+                    <h3>Real-Time Updates</h3>
+                    <p>That button press instantly updates your MediBuddy app, so you know immediately when medications are taken.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Set schedules in MediBuddy</h3>
+                    <p class="step-description">Caregivers add profiles and medication timings through the easy-to-use MediBuddy app.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Smart MediBoard alerts</h3>
+                    <p class="step-description">LED turns on at medication time, providing a clear, visual reminder for your loved one.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Confirmation & monitoring</h3>
+                    <p class="step-description">Button press marks medication as taken and updates your caregiver dashboard in real time.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Features -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Built for caregivers, designed with care</h2>
+            <div class="features-carousel">
+                <div class="features-track">
+                    <div class="feature-card">
+                        <div class="feature-card-icon">👥</div>
+                        <h3 class="feature-card-title">Multi-Profile Monitoring</h3>
+                        <p class="feature-card-description">Track multiple loved ones in one app. Manage medications, schedules, and insights for your entire care network.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-icon">🔌</div>
+                        <h3 class="feature-card-title">Smart Hardware Confirmation</h3>
+                        <p class="feature-card-description">Physical button press reduces guesswork. Know for certain when medications are taken, not just when reminders are sent.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-icon">🤖</div>
+                        <h3 class="feature-card-title">AI-Powered Insights</h3>
+                        <p class="feature-card-description">Smart summaries and early warnings help you spot patterns and stay ahead of potential issues before they become problems.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-icon">⏰</div>
+                        <h3 class="feature-card-title">Real-Time Alerts</h3>
+                        <p class="feature-card-description">Instant notifications keep you informed. Get updates the moment medications are taken or missed, anytime, anywhere.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-icon">🔐</div>
+                        <h3 class="feature-card-title">Privacy First Design</h3>
+                        <p class="feature-card-description">Your loved ones' data is protected with enterprise-grade security. We respect privacy while keeping you informed.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Emotional Reassurance -->
+    <section class="reassurance">
+        <div class="container">
+            <h2 class="section-title">Peace of mind, reduced stress</h2>
+            <p class="problem-text" style="max-width: 700px; margin-left: auto; margin-right: auto;">
+                MediBuddy isn't just about medication tracking—it's about giving you confidence and peace of mind. Know that your loved ones are taking care of themselves, even when you can't be there.
+            </p>
+            <div class="quote">
+                <p class="quote-text">"I just want to know they're okay, even when I'm not around."</p>
+            </div>
+            <p class="problem-text" style="max-width: 700px; margin-left: auto; margin-right: auto;">
+                This is what caregivers tell us every day. With MediBuddy and the Smart MediBoard, you'll have that visibility. You'll know they're okay.
+            </p>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">Support them better. Stress less.</h2>
+                <a href="/register.html" class="btn btn-primary btn-lg" style="background: white; color: #2563eb;">Start Using MediBuddy</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <img src="assets/img/logo.png" alt="MediBuddy Logo" class="footer-logo">
+                    <p class="footer-description">
+                        MediBuddy is a caregiver-first smart medication monitoring platform that works together with Smart MediBoard hardware to provide real-time visibility and peace of mind.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="footer-links-title">Quick Links</h4>
+                    <ul class="footer-links-list">
+                        <li><a href="/" class="footer-link">Home</a></li>
+                        <li><a href="#features" class="footer-link">Features</a></li>
+                        <li><a href="#how-it-works" class="footer-link">How It Works</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-links-title">Account</h4>
+                    <ul class="footer-links-list">
+                        <li><a href="/login.html" class="footer-link">Login</a></li>
+                        <li><a href="/register.html" class="footer-link">Register</a></li>
+                        <li><a href="#" class="footer-link">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copyright">&copy; 2024 MediBuddy. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href !== '#about' && href !== '#privacy' && href !== '#terms' && href !== '#pricing' && href !== '#community') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
+
+        // Active nav link highlighting on scroll
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.navbar .nav-link');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Features: continuous looping auto-scroll carousel (desktop)
+        (function () {
+            const carousel = document.querySelector('.features-carousel');
+            const track = carousel && carousel.querySelector('.features-track');
+            const hint = carousel && carousel.querySelector('.features-hint small');
+            if (!carousel || !track) return;
+
+            // Duplicate the track content for seamless looping (only once)
+            if (!track.dataset.looped) {
+                const original = Array.from(track.children);
+                original.forEach(node => track.appendChild(node.cloneNode(true)));
+                track.dataset.looped = 'true';
+            }
+
+            function setup() {
+                // Respect reduced motion preference
+                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    track.style.animation = 'none';
+                    return;
+                }
+
+                // Stop animation on small screens (stacked layout)
+                const isDesktop = window.innerWidth >= 768;
+                if (!isDesktop) {
+                    track.style.animation = 'none';
+                    return;
+                }
+
+                // Calculate duration so scroll speed feels natural and consistent
+                const singleWidth = track.scrollWidth / 2; // since we duplicated content
+                const speedPxPerSec = 60; // 60px per second
+                const durationSec = Math.max(8, singleWidth / speedPxPerSec);
+                track.style.setProperty('--scroll-duration', `${durationSec}s`);
+                track.style.animation = `scrollLeft var(--scroll-duration) linear infinite`;
+                if (hint) hint.style.opacity = 1;
+            }
+
+            // Pause on hover/focus for user control
+            carousel.addEventListener('mouseenter', () => { track.style.animationPlayState = 'paused'; if (hint) hint.style.opacity = 0.2; });
+            carousel.addEventListener('mouseleave', () => { track.style.animationPlayState = 'running'; if (hint) hint.style.opacity = 1; });
+            carousel.addEventListener('focusin', () => { track.style.animationPlayState = 'paused'; });
+            carousel.addEventListener('focusout', () => { track.style.animationPlayState = 'running'; });
+
+            window.addEventListener('resize', setup);
+            // Init
+            setup();
+        })();
+    </script>
+
+<script src="js/hero.js" defer></script>
+<script src="/js/navAuth.js" defer></script>
+    <!-- Bootstrap JS bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Carousel rotation - smooth transitions
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.hero-carousel .carousel-item');
+        
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+        
+        // 9 second animation + 2 second fade = 11 seconds total before next slide
+        setInterval(nextSlide, 4000); // Smooth, unhurried carousel
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
+
+        // Active nav link highlighting on scroll
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.navbar .nav-link');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+    <script src="js/navbar-component.js"></script>
+</body>
+</html>
+
