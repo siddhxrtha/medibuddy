@@ -316,7 +316,6 @@ class NavbarComponent extends HTMLElement {
                         <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
                         <li class="nav-item"><a href="/#how-it-works" class="nav-link">How It Works</a></li>
                         <li class="nav-item"><a href="/#features" class="nav-link">Features</a></li>
-                        <li class="nav-item"><a href="/#reassurance" class="nav-link">About</a></li>
                     </ul>
                     <button class="hamburger" id="hamburger" aria-label="Toggle menu">
                         <span></span>
