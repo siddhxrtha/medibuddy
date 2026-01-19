@@ -30,7 +30,7 @@ async function callOllamaAPI(prompt) {
         stream: false,
         temperature: 0.7,
         top_p: 0.9,
-        num_predict: 150 // Very short responses for quick interaction
+        num_predict: 100 // Ultra-short for super fast responses
       },
       {
         headers: { 'Content-Type': 'application/json' },
