@@ -7,6 +7,7 @@ class NavbarComponent extends HTMLElement {
     connectedCallback() {
         this.render();
         this.setupScrollListener();
+        this.checkAuthStatus();
     }
 
     render() {
@@ -172,6 +173,52 @@ class NavbarComponent extends HTMLElement {
                     background: linear-gradient(135deg, #1e40af, #1e3a8a);
                 }
 
+                .user-profile {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.75rem;
+                    padding: 0.5rem 1rem;
+                    background: rgba(37, 99, 235, 0.1);
+                    border-radius: 0.75rem;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                }
+
+                .user-profile:hover {
+                    background: rgba(37, 99, 235, 0.15);
+                    transform: translateY(-2px);
+                }
+
+                .user-avatar {
+                    width: 36px;
+                    height: 36px;
+                    border-radius: 50%;
+                    background: linear-gradient(135deg, var(--primary), #1e40af);
+                    color: white;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-weight: 700;
+                    font-size: 1rem;
+                }
+
+                .user-name {
+                    font-weight: 600;
+                    color: var(--text);
+                    font-size: 0.95rem;
+                }
+
+                .btn-danger {
+                    background: #dc3545;
+                    color: var(--white);
+                }
+
+                .btn-danger:hover {
+                    background: #c82333;
+                    transform: translateY(-2px);
+                    box-shadow: 0 8px 16px rgba(220, 53, 69, 0.3);
+                }
+
                 .hamburger {
                     display: none;
                     flex-direction: column;
@@ -327,6 +374,54 @@ class NavbarComponent extends HTMLElement {
             } else if (href === '/' && currentPath === '/') {
                 link.classList.add('active');
             }
+        });
+    }
+
+    async checkAuthStatus() {
+        try {
+            const res = await fetch('/api/auth/me', { credentials: 'include' });
+            if (!res.ok) return;
+            
+            const data = await res.json();
+            if (data && data.user) {
+                this.updateNavbarForLoggedInUser(data.user);
+            }
+        } catch (error) {
+            // User not logged in, keep default navbar
+        }
+    }
+
+    updateNavbarForLoggedInUser(user) {
+        const navLinks = this.shadowRoot.getElementById('navLinks');
+        const navCta = this.shadowRoot.getElementById('navCta');
+        
+        // Add Dashboard link to nav if not already there
+        const dashboardExists = Array.from(navLinks.children).some(li => 
+            li.querySelector('a[href="/dashboard"]')
+        );
+        
+        if (!dashboardExists) {
+            const dashboardItem = document.createElement('li');
+            dashboardItem.className = 'nav-item';
+            dashboardItem.innerHTML = '<a href="/dashboard" class="nav-link">Dashboard</a>';
+            navLinks.appendChild(dashboardItem);
+        }
+        
+        // Update CTA to show profile and logout
+        const initials = user.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+        navCta.innerHTML = `
+            <div class="user-profile">
+                <div class="user-avatar">${initials}</div>
+                <span class="user-name">${user.name}</span>
+            </div>
+            <button class="btn btn-danger" id="logoutBtn">Logout</button>
+        `;
+        
+        // Add logout functionality
+        const logoutBtn = navCta.querySelector('#logoutBtn');
+        logoutBtn.addEventListener('click', async () => {
+            await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
+            window.location.href = '/login.html';
         });
     }
 

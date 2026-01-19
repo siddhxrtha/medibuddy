@@ -13,58 +13,62 @@
 <body>
   <!-- Navbar Component -->
   <navbar-atag></navbar-atag>
-  <section class="auth-hero py-5">
-    <div class="container">
-      <div class="row g-4 align-items-center">
-        <div class="col-md-6 order-last order-md-first d-none d-md-block">
-          <div class="carousel slide shadow-sm rounded-3" id="regCarousel" data-bs-ride="carousel" data-bs-interval="3000">
-            <div class="carousel-inner rounded-3 overflow-hidden">
-              <div class="carousel-item active"><img src="https://www.retiregenie.com/wp-content/uploads/2023/06/5.jpg" class="d-block w-100" alt="slide"></div>
-              <div class="carousel-item"><img src="https://www.agewellsg.gov.sg/images/what%20is%20age%20well.jpg" class="d-block w-100" alt="slide"></div>
-              <div class="carousel-item"><img src="https://mtalvernia.sg/wp-content/uploads/2017/02/geriatric.jpg" class="d-block w-100" alt="slide"></div>
+
+  <!-- Toast Container -->
+  <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+  </div>
+
+  <section class="auth-hero" style="background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6)), url('https://www.income.com.sg/getmedia/f06c1f4e-c392-41de-8fcd-abfd828938c7/Elderly-Care-in-Singapore-Guide-Thumbnail.png?width=700&height=400&ext=.png') center/cover no-repeat; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div class="container d-flex align-items-center justify-content-center min-vh-100" style="padding: 2rem;">
+      <div class="row w-100 justify-content-center">
+        <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
+          <div class="login-panel login-card p-5 p-md-6 rounded-4 shadow-lg backdrop-blur">
+            <div class="text-center mb-5">
+              <i class="bi bi-person-plus" style="font-size: 3rem; color: #10b981; margin-bottom: 1rem;"></i>
+              <h2 class="mt-3 mb-2 fw-700" style="font-size: 2.2rem;">Join MediBuddy</h2>
+              <p class="text-muted" style="font-size: 1rem;">Create your caregiver account today</p>
             </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="login-panel p-4 rounded-3 shadow-sm">
-            <h2 class="mb-2">Create your account</h2>
-            <p class="text-muted mb-4">Caregiver-only accounts — one step to peace of mind.</p>
-            <div id="alert-placeholder"></div>
             <form id="register-form" class="needs-validation" novalidate>
-              <div class="mb-3">
-                <label class="form-label">Full name</label>
-                <input type="text" name="name" class="form-control" required>
+              <div class="mb-4">
+                <label class="form-label fw-600">Full Name</label>
+                <input type="text" name="name" class="form-control form-control-lg" placeholder="Your full name" required>
               </div>
-              <div class="mb-3">
-                <label class="form-label">Email</label>
-                <input type="email" name="email" class="form-control" required>
+              <div class="mb-4">
+                <label class="form-label fw-600">Email Address</label>
+                <input type="email" name="email" class="form-control form-control-lg" placeholder="your@email.com" required>
               </div>
-              <div class="mb-3 position-relative">
-                <label class="form-label">Password</label>
-                <input type="password" name="password" id="reg-password" class="form-control" minlength="8" required>
+              <div class="mb-4 position-relative">
+                <label class="form-label fw-600">Password</label>
+                <input type="password" name="password" id="reg-password" class="form-control form-control-lg" placeholder="••••••••" minlength="8" required>
                 <i class="bi bi-eye-slash toggle-password" data-target="reg-password" title="Show / hide password"></i>
-                <div id="password-strength-container" class="mt-2">
+                <div id="password-strength-container" class="mt-3">
                   <div class="progress" style="height:6px;"><div id="password-strength-bar" class="progress-bar" role="progressbar" style="width:0%"></div></div>
                   <small id="password-strength-text" class="text-muted">Strength</small>
                 </div>
                 <ul id="password-requirements" class="mt-2 text-muted small">
-                  <li data-rule="length">At least 8 characters</li>
-                  <li data-rule="uppercase">1 uppercase letter</li>
-                  <li data-rule="lowercase">1 lowercase letter</li>
-                  <li data-rule="digit">1 number</li>
-                  <li data-rule="special">1 special character</li>
+                  <li data-rule="length"><i class="bi bi-x-circle me-1"></i>At least 8 characters</li>
+                  <li data-rule="uppercase"><i class="bi bi-x-circle me-1"></i>1 uppercase letter</li>
+                  <li data-rule="lowercase"><i class="bi bi-x-circle me-1"></i>1 lowercase letter</li>
+                  <li data-rule="digit"><i class="bi bi-x-circle me-1"></i>1 number</li>
+                  <li data-rule="special"><i class="bi bi-x-circle me-1"></i>1 special character</li>
                 </ul>
               </div>
-              <div class="mb-3 position-relative">
-                <label class="form-label">Confirm password</label>
-                <input type="password" name="confirmPassword" id="reg-confirm" class="form-control" minlength="8" required>
+              <div class="mb-4 position-relative">
+                <label class="form-label fw-600">Confirm Password</label>
+                <input type="password" name="confirmPassword" id="reg-confirm" class="form-control form-control-lg" placeholder="••••••••" minlength="8" required>
                 <i class="bi bi-eye-slash toggle-password" data-target="reg-confirm" title="Show / hide password"></i>
               </div>
               <div class="d-grid mb-3">
-                <button class="btn btn-primary btn-lg" type="submit">Create account</button>
+                <button class="btn btn-success btn-lg fw-600" type="submit">
+                  <i class="bi bi-check-circle me-2"></i>Create Account
+                </button>
               </div>
             </form>
-            <div class="text-center"><small class="text-muted">Already have an account? <a href="/login.html">Log in</a></small></div>
+            <hr class="my-4">
+            <div class="text-center">
+              <small class="text-muted">Already have an account? </small>
+              <a href="/login.html" class="fw-600 text-primary">Log in here</a>
+            </div>
           </div>
         </div>
       </div>

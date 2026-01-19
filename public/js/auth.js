@@ -1,6 +1,45 @@
-// Handles registration and login forms using fetch() and shows Bootstrap alerts
-function showAlert(target, msg, type = 'danger') {
-  target.innerHTML = `<div class="alert alert-${type} alert-dismissible" role="alert">${msg}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`;
+// Handles registration and login forms using fetch() and shows beautiful Bootstrap toasts
+function showToast(msg, type = 'danger', title = 'Alert') {
+  const toastContainer = document.querySelector('.toast-container');
+  
+  // Map types to Bootstrap color classes and icons
+  const typeConfig = {
+    danger: { bgClass: 'bg-danger', icon: 'bi-exclamation-circle', textClass: 'text-danger' },
+    success: { bgClass: 'bg-success', icon: 'bi-check-circle', textClass: 'text-success' },
+    warning: { bgClass: 'bg-warning', icon: 'bi-exclamation-triangle', textClass: 'text-warning' },
+    info: { bgClass: 'bg-info', icon: 'bi-info-circle', textClass: 'text-info' }
+  };
+  
+  const config = typeConfig[type] || typeConfig.danger;
+  
+  // Create toast element
+  const toastId = 'toast-' + Date.now();
+  const toastHTML = `
+    <div id="${toastId}" class="toast custom-toast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header custom-toast-header ${config.bgClass}">
+        <i class="bi ${config.icon} me-2" style="font-size: 1.1rem;"></i>
+        <strong class="me-auto fw-700">${title}</strong>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body custom-toast-body">
+        <div class="d-flex align-items-center">
+          <span>${msg}</span>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+  
+  // Show toast
+  const toastElement = document.getElementById(toastId);
+  const toast = new bootstrap.Toast(toastElement, { delay: 4500 });
+  toast.show();
+  
+  // Remove toast element from DOM after it's hidden
+  toastElement.addEventListener('hidden.bs.toast', () => {
+    toastElement.remove();
+  });
 }
 
 // Register form
@@ -8,7 +47,6 @@ const registerForm = document.getElementById('register-form');
 if (registerForm) {
   registerForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const alertPlaceholder = document.getElementById('alert-placeholder');
     const fd = new FormData(registerForm);
     const payload = {
       name: fd.get('name').trim(),
@@ -19,21 +57,43 @@ if (registerForm) {
 
     // basic client-side validation
     if (!payload.name || !payload.email || !payload.password || !payload.confirmPassword) {
-      return showAlert(alertPlaceholder, 'Please complete all fields.');
+      return showToast('Please complete all fields.', 'warning', 'Incomplete Form');
     }
-    if (payload.password.length < 8) return showAlert(alertPlaceholder, 'Password must be at least 8 characters.');
-    if (payload.password !== payload.confirmPassword) return showAlert(alertPlaceholder, 'Passwords do not match.');
+    if (payload.password.length < 8) return showToast('Password must be at least 8 characters.', 'warning', 'Password Too Short');
+    if (payload.password !== payload.confirmPassword) return showToast('Passwords do not match.', 'danger', 'Password Mismatch');
 
     try {
       const res = await fetch('/api/auth/register', {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload), credentials: 'include'
       });
       const data = await res.json();
-      if (!res.ok) return showAlert(alertPlaceholder, data.error || 'Registration failed.');
-      showAlert(alertPlaceholder, 'Registered successfully — redirecting to login...', 'success');
-      setTimeout(() => window.location.href = '/login.html', 900);
+      if (!res.ok) return showToast(data.error || 'Registration failed.', 'danger', 'Registration Error');
+      
+      showToast('Welcome aboard! Logging you in...', 'success', 'Success');
+      
+      // Auto-login after registration
+      setTimeout(async () => {
+        try {
+          const loginRes = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: payload.email, password: payload.password }),
+            credentials: 'include'
+          });
+          const loginData = await loginRes.json();
+          if (loginRes.ok) {
+            window.location.href = '/dashboard';
+          } else {
+            showToast('Account created! Please log in.', 'info', 'Account Ready');
+            setTimeout(() => window.location.href = '/login.html', 1500);
+          }
+        } catch (err) {
+          showToast('Account created! Please log in.', 'info', 'Account Ready');
+          setTimeout(() => window.location.href = '/login.html', 1500);
+        }
+      }, 500);
     } catch (err) {
-      showAlert(alertPlaceholder, 'Network error. Try again later.');
+      showToast('Network error. Try again later.', 'danger', 'Connection Error');
     }
   });
 }
@@ -43,21 +103,23 @@ const loginForm = document.getElementById('login-form');
 if (loginForm) {
   loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const alertPlaceholder = document.getElementById('alert-placeholder');
     const fd = new FormData(loginForm);
     const payload = { email: fd.get('email').trim(), password: fd.get('password') };
-    if (!payload.email || !payload.password) return showAlert(alertPlaceholder, 'Email and password required.');
+    if (!payload.email || !payload.password) return showToast('Email and password required.', 'warning', 'Missing Fields');
 
     try {
       const res = await fetch('/api/auth/login', {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload), credentials: 'include'
       });
       const data = await res.json();
-      if (!res.ok) return showAlert(alertPlaceholder, data.error || 'Invalid email or password');
+      if (!res.ok) return showToast(data.error || 'Invalid email or password', 'danger', 'Login Failed');
       // success
-      window.location.href = '/dashboard';
+      showToast('Logging you in...', 'success', 'Welcome');
+      setTimeout(() => {
+        window.location.href = '/dashboard';
+      }, 800);
     } catch (err) {
-      showAlert(alertPlaceholder, 'Network error. Try again later.');
+      showToast('Network error. Try again later.', 'danger', 'Connection Error');
     }
   });
 }
@@ -69,10 +131,14 @@ if (logoutBtn) {
     try {
       const res = await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
       const data = await res.json();
-      if (res.ok) window.location.href = '/login.html';
-      else alert(data.error || 'Failed to logout');
+      if (res.ok) {
+        showToast('You have been logged out.', 'success', 'Logged Out');
+        setTimeout(() => {
+          window.location.href = '/login.html';
+        }, 800);
+      } else showToast(data.error || 'Failed to logout', 'danger', 'Logout Error');
     } catch (err) {
-      alert('Network error');
+      showToast('Network error', 'danger', 'Connection Error');
     }
   });
 }
