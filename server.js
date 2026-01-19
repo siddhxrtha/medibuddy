@@ -1,9 +1,11 @@
+require('dotenv').config();
 const path = require('path');
 const express = require('express');
 const session = require('express-session');
 const SQLiteStore = require('connect-sqlite3')(session);
 const rateLimit = require('express-rate-limit');
 const authRoutes = require('./routes/auth');
+const aiRoutes = require('./routes/ai');
 const db = require('./db');
 
 const app = express();
@@ -34,6 +36,9 @@ app.use('/api/auth', (req, res, next) => {
   next();
 }, authRoutes);
 
+// Mount AI assistant routes
+app.use('/api/ai', aiRoutes);
+
 // Endpoint for front-end to check current session / user
 app.get('/api/auth/me', (req, res) => {
   if (!req.session.userId) return res.status(401).json({ error: 'Not authenticated' });
@@ -52,6 +57,24 @@ app.get('/dashboard', ensureAuthenticated, (req, res) => {
 
 // Simple health check
 app.get('/health', (req, res) => res.json({ ok: true }));
+
+// Check Ollama status
+app.get('/api/ollama-status', async (req, res) => {
+  try {
+    const axios = require('axios');
+    const response = await axios.get('http://localhost:11434/api/tags', { timeout: 5000 });
+    res.json({ 
+      running: true, 
+      message: 'Ollama is running',
+      models: response.data.models 
+    });
+  } catch (error) {
+    res.status(503).json({ 
+      running: false, 
+      message: 'Ollama is not running. Start it with: ollama serve'
+    });
+  }
+});
 
 // Error handler
 app.use((err, req, res, next) => {

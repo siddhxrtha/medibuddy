@@ -223,6 +223,30 @@
               </div>
             </div>
           </div>
+
+          <!-- AI Health Assistant -->
+          <div class="card shadow-sm mt-4">
+            <div class="card-body">
+              <h5 class="card-title mb-3"><i class="bi bi-robot me-2"></i>AI Health Assistant</h5>
+              <div class="ai-chat-container">
+                <div class="ai-chat-messages" id="aiChatMessages" style="height: 250px; overflow-y: auto; border: 1px solid #e0e0e0; border-radius: 5px; padding: 10px; margin-bottom: 10px; background: #f9f9f9;">
+                  <div class="ai-message mb-2">
+                    <small class="text-muted"><strong>Assistant:</strong></small>
+                    <p class="mb-0 small">Hi! I'm MediBuddy AI. Ask me about health tips for caregivers, medication adherence, stress management, or wellness advice!</p>
+                  </div>
+                </div>
+                <div class="input-group mb-2">
+                  <input type="text" class="form-control" id="aiMessageInput" placeholder="Ask me anything about health & wellness..." aria-label="Chat message">
+                  <button class="btn btn-primary" type="button" id="aiSendBtn">
+                    <i class="bi bi-send-fill"></i>
+                  </button>
+                </div>
+                <button class="btn btn-sm btn-outline-secondary w-100" id="aiTipsBtn">
+                  <i class="bi bi-lightbulb-fill me-2"></i>Get Daily Health Tips
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -542,6 +566,187 @@
         document.getElementById('navContent')?.classList.remove('active');
       });
     });
+
+    // ===== AI ASSISTANT CODE =====
+    const aiChatMessages = document.getElementById('aiChatMessages');
+    const aiMessageInput = document.getElementById('aiMessageInput');
+    const aiSendBtn = document.getElementById('aiSendBtn');
+    const aiTipsBtn = document.getElementById('aiTipsBtn');
+
+    // Check Ollama status on load
+    async function checkOllamaStatus() {
+      try {
+        const response = await fetch('/api/ollama-status', { credentials: 'include' });
+        const data = await response.json();
+        
+        if (!data.running) {
+          addAIMessage('⚠️ Ollama is not running! Please start it:\n\nollama serve', false, false);
+          aiSendBtn.disabled = true;
+          aiTipsBtn.disabled = true;
+        } else {
+          addAIMessage('✅ Connected to Ollama! Ready to chat.', false, false);
+        }
+      } catch (error) {
+        addAIMessage('⚠️ Cannot reach Ollama server. Make sure it\'s running:\n\nollama serve', false, false);
+        aiSendBtn.disabled = true;
+        aiTipsBtn.disabled = true;
+      }
+    }
+
+    // Add message to chat with typewriter effect for AI
+    function addAIMessage(text, isUser = false, useTypewriter = true) {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `ai-message mb-2 ${isUser ? 'user-message' : 'assistant-message'}`;
+      
+      const header = document.createElement('small');
+      header.className = 'text-muted';
+      header.innerHTML = `<strong>${isUser ? 'You' : 'Assistant'}:</strong>`;
+      
+      const content = document.createElement('p');
+      content.className = 'mb-0 small';
+      
+      messageDiv.appendChild(header);
+      messageDiv.appendChild(document.createElement('br'));
+      messageDiv.appendChild(content);
+      
+      aiChatMessages.appendChild(messageDiv);
+      
+      // Typewriter effect for AI responses
+      if (!isUser && useTypewriter) {
+        typewriterEffect(content, text);
+      } else {
+        content.textContent = text;
+      }
+      
+      aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+    }
+
+    // Typewriter effect - types out text character by character
+    function typewriterEffect(element, text, speed = 25) {
+      let index = 0;
+      let displayText = '';
+      element.textContent = ''; // Clear with textContent instead of innerHTML
+      
+      function type() {
+        if (index < text.length) {
+          const char = text.charAt(index);
+          displayText += char;
+          element.textContent = displayText; // Use textContent to avoid HTML issues
+          
+          index++;
+          
+          // Scroll to bottom as text appears
+          aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+          
+          // Variable speed based on punctuation
+          let delay = speed;
+          if (char === '.' || char === '!' || char === '?') {
+            delay = speed * 2; // Pause at end of sentence
+          } else if (char === ',') {
+            delay = speed * 0.8; // Slight pause at comma
+          } else if (char === ' ') {
+            delay = speed * 0.5; // Faster on spaces
+          }
+          
+          setTimeout(type, delay);
+        }
+      }
+      
+      type();
+    }
+
+    // Send message to AI
+    async function sendAIMessage() {
+      const message = aiMessageInput.value.trim();
+      if (!message) return;
+
+      // Add user message to chat
+      addAIMessage(message, true);
+      aiMessageInput.value = '';
+      aiSendBtn.disabled = true;
+
+      try {
+        const response = await fetch('/api/ai/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          credentials: 'include',
+          body: JSON.stringify({ message })
+        });
+
+        const data = await response.json();
+        
+        if (!response.ok) {
+          if (response.status === 503) {
+            addAIMessage('❌ Ollama is not running!\n\nStart it in another terminal:\n\nollama serve', false, false);
+          } else {
+            addAIMessage('❌ Error: ' + (data.error || 'Unknown error'), false, false);
+          }
+        } else {
+          addAIMessage(data.response || 'Sorry, I could not process that.', false, true);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+          addAIMessage('❌ Cannot reach Ollama server!\n\nMake sure it\'s running:\n\n1. Open another terminal\n2. Run: ollama serve', false, false);
+        } else {
+          addAIMessage('❌ Error: ' + error.message, false, false);
+        }
+      } finally {
+        aiSendBtn.disabled = false;
+        aiMessageInput.focus();
+      }
+    }
+
+    // Get daily health tips
+    async function getHealthTips() {
+      aiSendBtn.disabled = true;
+      aiTipsBtn.disabled = true;
+      addAIMessage('Getting health tips for you...', false);
+
+      try {
+        const response = await fetch('/api/ai/tips?category=caregiver', {
+          method: 'GET',
+          credentials: 'include'
+        });
+
+        const data = await response.json();
+        
+        if (!response.ok) {
+          if (response.status === 503) {
+            addAIMessage('❌ Ollama is not running!\n\nStart it in another terminal:\n\nollama serve', false, false);
+          } else {
+            addAIMessage('❌ Error: ' + (data.error || 'Unknown error'), false, false);
+          }
+        } else {
+          addAIMessage(data.tips || 'Could not fetch tips.', false, true);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+          addAIMessage('❌ Cannot reach Ollama server!\n\nMake sure it\'s running:\n\n1. Open another terminal\n2. Run: ollama serve', false, false);
+        } else {
+          addAIMessage('❌ Error: ' + error.message, false, false);
+        }
+      } finally {
+        aiSendBtn.disabled = false;
+        aiTipsBtn.disabled = false;
+      }
+    }
+
+    // Event listeners
+    aiSendBtn.addEventListener('click', sendAIMessage);
+    aiMessageInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendAIMessage();
+      }
+    });
+    aiTipsBtn.addEventListener('click', getHealthTips);
+    
+    // Check Ollama status when page loads
+    setTimeout(checkOllamaStatus, 1000);
   </script>
 
   <script src="/js/auth.js" defer></script>
