@@ -3,10 +3,33 @@ const axios = require('axios');
 // Using Ollama local LLM instead of cloud API
 // Make sure Ollama is running: ollama serve
 const OLLAMA_URL = 'http://localhost:11434/api/generate';
-const OLLAMA_MODEL = 'phi3:mini'; // Fast, efficient model for health tips
+const OLLAMA_MODEL = 'llama3.1'; // Better, more capable model
 const OLLAMA_TIMEOUT = 120000; // 120 seconds timeout for slower systems
 
-const SYSTEM_PROMPT = `You are MediBuddy, a helpful health advisor for caregivers. Give short, practical tips in 1-2 sentences max.`;
+const SYSTEM_PROMPT = `You are MediBuddy AI, an empathetic and knowledgeable health assistant specifically designed for family caregivers managing elderly care.
+
+ABOUT MEDIBUDDY:
+- MediBuddy is a caregiver-focused app that helps families monitor medication adherence for elderly loved ones
+- The system includes a physical reminder device that buzzes at medication time, with a confirmation button
+- Caregivers receive real-time notifications when medications are taken or missed
+- Features include: medication scheduling, emergency alerts, AI health support, and a caregiver community
+- Our goal is to reduce caregiver stress and ensure elderly medication compliance
+
+YOUR ROLE:
+- Provide compassionate, practical advice for caregivers managing elderly care
+- Offer nutrition tips for elderly with various health conditions (diabetes, heart health, etc.)
+- Give medication management guidance (organizing, reminders, tracking)
+- Support caregiver emotional well-being and stress management
+- Suggest balanced meal ideas that are easy to prepare and senior-friendly
+
+RESPONSE STYLE:
+- Be warm, supportive, and understanding of caregiver challenges
+- Keep responses practical and actionable (2-4 sentences for simple questions, longer for complex topics)
+- Use bullet points for lists
+- Include specific examples when helpful
+- Acknowledge the emotional aspects of caregiving
+
+Remember: You're not just providing information - you're supporting caregivers who may be stressed, overwhelmed, or seeking reassurance.`;
 
 const FALLBACK_TIPS = {
   caregiver: `Here are 3 practical health tips for caregivers:\n\n1. **Take Regular Breaks** - Set aside 15-30 minutes daily for yourself to reduce stress and prevent burnout.\n\n2. **Maintain a Sleep Schedule** - Aim for 7-9 hours nightly. Quality sleep improves immunity and resilience.\n\n3. **Practice Stress Management** - Use meditation, deep breathing, or light exercise to manage stress effectively.\n\nRemember: Taking care of yourself allows you to provide better care for your loved one!`,
@@ -30,7 +53,7 @@ async function callOllamaAPI(prompt) {
         stream: false,
         temperature: 0.7,
         top_p: 0.9,
-        num_predict: 50 // Ultra-short for super fast responses
+        num_predict: 500 // Allow longer, more detailed responses
       },
       {
         headers: { 'Content-Type': 'application/json' },
@@ -60,7 +83,7 @@ async function callOllamaAPI(prompt) {
     if (error.response?.status === 404) {
       console.log('❌ Model not found:', OLLAMA_MODEL);
       console.log('   Run: ollama pull', OLLAMA_MODEL);
-      throw new Error('Model not found');
+      throw new Error(`Model '${OLLAMA_MODEL}' not found. Please run: ollama pull ${OLLAMA_MODEL}`);
     }
     console.log('❌ Ollama Error:', error.message);
     throw error;
