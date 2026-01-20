@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Community Hub - MediBuddy</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <link rel="stylesheet" href="/css/community.css">
+</head>
+<body>
+  <header class="navbar-header">
+    <nav class="custom-navbar">
+      <div class="navbar-container">
+        <a class="navbar-brand" href="/">
+          <img src="/assets/img/logo.png" alt="MediBuddy Logo" class="logo-img">
+          <span>MediBuddy</span>
+        </a>
+        
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <div class="nav-content" id="navContent">
+          <ul class="nav-links">
+            <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link active" href="/community">Community</a></li>
+            <li class="nav-item"><a class="nav-link" href="/index.html">Home</a></li>
+            <li class="nav-item position-relative">
+              <a class="nav-link notif-link" href="#notifications">
+                <i class="bi bi-bell-fill"></i>
+                <span class="nav-notif-badge" id="navNotifBadge">0</span>
+              </a>
+            </li>
+          </ul>
+          <div class="nav-cta">
+            <div class="user-profile" id="userProfile">
+              <div class="user-avatar" id="userAvatar">C</div>
+              <div>
+                <div class="user-name" id="navUserName">Loading...</div>
+              </div>
+            </div>
+            <button class="btn btn-outline" id="logoutBtn">Log out</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container py-4">
+    <div class="community-container">
+      <!-- Hero Section -->
+      <div class="community-hero mb-5">
+        <div class="row align-items-center">
+          <div class="col-lg-8">
+            <h1 class="fw-bold mb-3">
+              <i class="bi bi-people-fill text-primary me-2"></i>
+              Caregiver Community Hub
+            </h1>
+            <p class="lead mb-0">Connect, share, and support each other on your caregiving journey. You're not alone.</p>
+          </div>
+          <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+            <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#newPostModal">
+              <i class="bi bi-plus-circle me-2"></i>Share Your Story
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="row g-3 mb-4">
+        <div class="col-md-3 col-6">
+          <div class="stat-card-community">
+            <i class="bi bi-chat-dots-fill"></i>
+            <h4>1,247</h4>
+            <p>Active Members</p>
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <div class="stat-card-community">
+            <i class="bi bi-file-text-fill"></i>
+            <h4>3,842</h4>
+            <p>Shared Stories</p>
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <div class="stat-card-community">
+            <i class="bi bi-heart-fill"></i>
+            <h4>12.5K</h4>
+            <p>Support Given</p>
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <div class="stat-card-community">
+            <i class="bi bi-lightbulb-fill"></i>
+            <h4>856</h4>
+            <p>Tips Shared</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <!-- Left Column - Main Content -->
+        <div class="col-lg-8">
+          <!-- Category Tabs -->
+          <div class="category-tabs mb-4">
+            <button class="category-tab active" data-category="all">
+              <i class="bi bi-grid-fill me-2"></i>All Posts
+            </button>
+            <button class="category-tab" data-category="experiences">
+              <i class="bi bi-chat-heart-fill me-2"></i>Experiences
+            </button>
+            <button class="category-tab" data-category="tips">
+              <i class="bi bi-lightbulb-fill me-2"></i>Tips & Advice
+            </button>
+            <button class="category-tab" data-category="support">
+              <i class="bi bi-hand-thumbs-up-fill me-2"></i>Support
+            </button>
+            <button class="category-tab" data-category="meals">
+              <i class="bi bi-egg-fried me-2"></i>Meal Ideas
+            </button>
+          </div>
+
+          <!-- Community Posts Feed -->
+          <div id="communityFeed">
+            <!-- Sample Post 1 -->
+            <div class="community-post" data-category="experiences">
+              <div class="post-header">
+                <div class="d-flex align-items-center">
+                  <div class="post-avatar">S</div>
+                  <div>
+                    <h6 class="mb-0 fw-bold">Sarah Chen</h6>
+                    <small class="text-muted">2 hours ago • Singapore</small>
+                  </div>
+                </div>
+                <span class="post-badge badge-experiences">Experience</span>
+              </div>
+              <div class="post-content">
+                <h5 class="mb-2">Finally got my mom to remember her medication!</h5>
+                <p>After struggling for months, I combined MediBuddy with a simple morning routine. Now she associates the buzzer with her favorite morning tea time. Small wins matter! 💙</p>
+              </div>
+              <div class="post-footer">
+                <button class="post-action"><i class="bi bi-heart"></i> 124</button>
+                <button class="post-action"><i class="bi bi-chat"></i> 18 Comments</button>
+                <button class="post-action"><i class="bi bi-share"></i> Share</button>
+              </div>
+            </div>
+
+            <!-- Sample Post 2 -->
+            <div class="community-post" data-category="meals">
+              <div class="post-header">
+                <div class="d-flex align-items-center">
+                  <div class="post-avatar">M</div>
+                  <div>
+                    <h6 class="mb-0 fw-bold">Michelle Tan</h6>
+                    <small class="text-muted">5 hours ago • Singapore</small>
+                  </div>
+                </div>
+                <span class="post-badge badge-meals">Meal Ideas</span>
+              </div>
+              <div class="post-content">
+                <h5 class="mb-2">Easy Senior-Friendly Breakfast Ideas 🍳</h5>
+                <p>Here are 3 nutritious breakfasts my grandmother loves:</p>
+                <ul>
+                  <li>Soft scrambled eggs with whole grain toast</li>
+                  <li>Overnight oats with banana and honey</li>
+                  <li>Steamed fish porridge with ginger</li>
+                </ul>
+                <p>All are easy to chew and packed with nutrients!</p>
+              </div>
+              <div class="post-footer">
+                <button class="post-action"><i class="bi bi-heart"></i> 89</button>
+                <button class="post-action"><i class="bi bi-chat"></i> 24 Comments</button>
+                <button class="post-action"><i class="bi bi-bookmark"></i> Save</button>
+              </div>
+            </div>
+
+            <!-- Sample Post 3 -->
+            <div class="community-post" data-category="tips">
+              <div class="post-header">
+                <div class="d-flex align-items-center">
+                  <div class="post-avatar">R</div>
+                  <div>
+                    <h6 class="mb-0 fw-bold">Raj Kumar</h6>
+                    <small class="text-muted">1 day ago • Singapore</small>
+                  </div>
+                </div>
+                <span class="post-badge badge-tips">Tips & Advice</span>
+              </div>
+              <div class="post-content">
+                <h5 class="mb-2">Managing Caregiver Burnout 🌟</h5>
+                <p>Fellow caregivers, please remember to take care of YOURSELF too. My top 3 tips:</p>
+                <ol>
+                  <li>Schedule 15 minutes daily for yourself (non-negotiable!)</li>
+                  <li>Join a support group (this community counts!)</li>
+                  <li>Don't hesitate to ask family for help</li>
+                </ol>
+                <p>You can't pour from an empty cup. ❤️</p>
+              </div>
+              <div class="post-footer">
+                <button class="post-action"><i class="bi bi-heart"></i> 203</button>
+                <button class="post-action"><i class="bi bi-chat"></i> 45 Comments</button>
+                <button class="post-action"><i class="bi bi-share"></i> Share</button>
+              </div>
+            </div>
+
+            <!-- Sample Post 4 -->
+            <div class="community-post" data-category="support">
+              <div class="post-header">
+                <div class="d-flex align-items-center">
+                  <div class="post-avatar">L</div>
+                  <div>
+                    <h6 class="mb-0 fw-bold">Lisa Wong</h6>
+                    <small class="text-muted">2 days ago • Singapore</small>
+                  </div>
+                </div>
+                <span class="post-badge badge-support">Need Support</span>
+              </div>
+              <div class="post-content">
+                <h5 class="mb-2">Feeling overwhelmed today...</h5>
+                <p>My dad missed two doses this week and I feel like I'm failing. Working full-time while managing his care is so hard. Anyone else going through this?</p>
+              </div>
+              <div class="post-footer">
+                <button class="post-action"><i class="bi bi-heart"></i> 67</button>
+                <button class="post-action"><i class="bi bi-chat"></i> 38 Comments</button>
+                <button class="post-action"><i class="bi bi-hand-thumbs-up"></i> Support</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column - Sidebar -->
+        <div class="col-lg-4">
+          <!-- AI Assistant Quick Access -->
+          <div class="card shadow-sm mb-4 community-card">
+            <div class="card-body">
+              <h5 class="card-title mb-3">
+                <i class="bi bi-robot text-primary me-2"></i>Ask MediBuddy AI
+              </h5>
+              <p class="text-muted small mb-3">Get instant guidance on caregiving, nutrition, and medication management.</p>
+              <button class="btn btn-gradient w-100" id="openAiFromCommunity">
+                <i class="bi bi-chat-dots me-2"></i>Chat with AI Assistant
+              </button>
+            </div>
+          </div>
+
+          <!-- Popular Meal Plans -->
+          <div class="card shadow-sm mb-4 community-card">
+            <div class="card-body">
+              <h5 class="card-title mb-3">
+                <i class="bi bi-egg-fried text-success me-2"></i>Popular Meal Plans
+              </h5>
+              <div class="meal-plan-item">
+                <h6>Diabetic-Friendly Meals</h6>
+                <p class="small text-muted mb-2">Low-sugar, balanced nutrition</p>
+                <a href="#" class="small">View recipes →</a>
+              </div>
+              <hr>
+              <div class="meal-plan-item">
+                <h6>Heart-Healthy Options</h6>
+                <p class="small text-muted mb-2">Low sodium, omega-3 rich</p>
+                <a href="#" class="small">View recipes →</a>
+              </div>
+              <hr>
+              <div class="meal-plan-item">
+                <h6>Easy-to-Swallow Foods</h6>
+                <p class="small text-muted mb-2">Soft textures, nutrient-dense</p>
+                <a href="#" class="small">View recipes →</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Support Resources -->
+          <div class="card shadow-sm mb-4 community-card">
+            <div class="card-body">
+              <h5 class="card-title mb-3">
+                <i class="bi bi-life-preserver text-danger me-2"></i>Support Resources
+              </h5>
+              <div class="resource-item">
+                <i class="bi bi-telephone-fill"></i>
+                <div>
+                  <strong>Caregiver Helpline</strong>
+                  <p class="small mb-0">1800-XXX-XXXX</p>
+                </div>
+              </div>
+              <div class="resource-item">
+                <i class="bi bi-hospital"></i>
+                <div>
+                  <strong>Healthcare Providers</strong>
+                  <p class="small mb-0">Find nearby support</p>
+                </div>
+              </div>
+              <div class="resource-item">
+                <i class="bi bi-book"></i>
+                <div>
+                  <strong>Guides & Articles</strong>
+                  <p class="small mb-0">Caregiving resources</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Community Guidelines -->
+          <div class="card shadow-sm community-card">
+            <div class="card-body">
+              <h5 class="card-title mb-3">
+                <i class="bi bi-shield-check text-info me-2"></i>Community Guidelines
+              </h5>
+              <ul class="small mb-0">
+                <li>Be respectful and supportive</li>
+                <li>Share experiences, not medical advice</li>
+                <li>Protect privacy - no personal info</li>
+                <li>Report inappropriate content</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Floating AI Chat Button -->
+  <button class="floating-ai-btn" id="aiFloatingBtn" title="Open AI Assistant">
+    <span class="ai-btn-icon">✨</span>
+    <span class="ai-btn-text">MediBuddy AI</span>
+  </button>
+
+  <!-- New Post Modal -->
+  <div class="modal fade" id="newPostModal" tabindex="-1" aria-labelledby="newPostModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="newPostModalLabel">
+            <i class="bi bi-pencil-square me-2"></i>Share with the Community
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="newPostForm">
+            <div class="mb-3">
+              <label for="postCategory" class="form-label">Category</label>
+              <select class="form-select" id="postCategory" required>
+                <option value="">Select a category...</option>
+                <option value="experiences">Share an Experience</option>
+                <option value="tips">Tips & Advice</option>
+                <option value="support">Need Support</option>
+                <option value="meals">Meal Ideas</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="postTitle" class="form-label">Title</label>
+              <input type="text" class="form-control" id="postTitle" placeholder="Give your post a title..." required>
+            </div>
+            <div class="mb-3">
+              <label for="postContent" class="form-label">Your Story</label>
+              <textarea class="form-control" id="postContent" rows="6" placeholder="Share your experience, tips, or ask for support..." required></textarea>
+            </div>
+            <div class="form-check mb-3">
+              <input class="form-check-input" type="checkbox" id="postAnonymous">
+              <label class="form-check-label" for="postAnonymous">
+                Post anonymously
+              </label>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="submitPost">
+            <i class="bi bi-send me-2"></i>Share Post
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Chat Modal (reuse from dashboard) -->
+  <div class="ai-modal-overlay" id="aiModalOverlay"></div>
+  <div class="ai-modal-container" id="aiModalContainer">
+    <div class="ai-modal-header">
+      <div>
+        <h4 class="mb-1"><i class="bi bi-sparkles me-2" style="color: #667eea;"></i>MediBuddy AI Health Assistant</h4>
+        <p class="mb-0 small text-muted">Ask me about caregiving, nutrition, or medication management</p>
+      </div>
+      <button class="btn-close-modal" id="closeAiModal" title="Close">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+    <div class="ai-chat-messages" id="aiChatMessages">
+      <div class="ai-message">
+        <div class="ai-avatar">✨</div>
+        <div class="ai-bubble">
+          <p>Hello! I'm your MediBuddy AI assistant. I can help you with:</p>
+          <ul>
+            <li>Caregiving tips and emotional support</li>
+            <li>Nutritious meal suggestions for elderly care</li>
+            <li>Medication management guidance</li>
+            <li>General health and wellness advice</li>
+          </ul>
+          <p>How can I assist you today?</p>
+        </div>
+      </div>
+    </div>
+    <div class="ai-input-container">
+      <textarea class="ai-input" id="aiInput" placeholder="Ask me anything about caregiving..." rows="1"></textarea>
+      <button class="ai-send-btn" id="aiSendBtn">
+        <i class="bi bi-send-fill"></i>
+      </button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/community.js"></script>
+</body>
+</html>
