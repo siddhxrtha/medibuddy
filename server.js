@@ -6,7 +6,9 @@ const SQLiteStore = require('connect-sqlite3')(session);
 const rateLimit = require('express-rate-limit');
 const authRoutes = require('./routes/auth');
 const aiRoutes = require('./routes/ai');
+const scheduleRoutes = require('./routes/schedules');
 const db = require('./db');
+const { initScheduleTable } = require('./models/scheduleModel');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -38,6 +40,7 @@ app.use('/api/auth', (req, res, next) => {
 
 // Mount AI assistant routes
 app.use('/api/ai', aiRoutes);
+app.use(scheduleRoutes);
 
 // Endpoint for front-end to check current session / user
 app.get('/api/auth/me', (req, res) => {
@@ -53,6 +56,11 @@ app.get('/api/auth/me', (req, res) => {
 const { ensureAuthenticated } = require('./middleware/auth');
 app.get('/dashboard', ensureAuthenticated, (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'dashboard.html'));
+});
+
+// Protected community route
+app.get('/community', ensureAuthenticated, (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'community.html'));
 });
 
 // Simple health check
@@ -84,6 +92,7 @@ app.use((err, req, res, next) => {
 
 // Initialize DB and start
 db.init().then(() => {
+  initScheduleTable(); // Initialize medication schedule table
   app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
 }).catch(err => {
   console.error('Failed to initialize DB', err);

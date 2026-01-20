@@ -1,5 +1,7 @@
 # MediBuddy (SIP) - Caregiver Auth Demo
 
+cd "C:\Users\Siddhartha\AppData\Local\Programs\Ollama"; .\ollama.exe serve
+
 Small Node + Express app demonstrating caregiver registration and login using SQLite and session-based auth.
 
 Stack
