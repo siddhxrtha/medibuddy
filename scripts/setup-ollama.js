@@ -2,7 +2,7 @@
 
 /**
  * Setup script for Ollama local LLM
- * Downloads the phi3:mini model for offline use
+ * Downloads the llama3.1 model for offline use
  */
 
 const { execSync } = require('child_process');
@@ -44,11 +44,11 @@ try {
   }
 
   // Check if model exists
-  console.log('\nChecking if phi3:mini model exists...');
+  console.log('\nChecking if llama3.1 model exists...');
   try {
     const models = execSync(`"${ollamaPath}" list`, { encoding: 'utf-8' });
-    if (models.includes('phi3:mini')) {
-      console.log('✅ Model phi3:mini is already installed\n');
+    if (models.includes('llama3.1')) {
+      console.log('✅ Model llama3.1 is already installed\n');
       console.log('Ready to use! Run:\n');
       console.log('  Terminal 1: ollama serve');
       console.log('  Terminal 2: npm start\n');
@@ -58,10 +58,10 @@ try {
     console.log('Model list unavailable, trying to pull model anyway...');
   }
 
-  console.log('Downloading phi3:mini model...');
+  console.log('Downloading llama3.1 model...');
   console.log('(This may take a few minutes on first run)\n');
   
-  execSync(`"${ollamaPath}" pull phi3:mini`, { stdio: 'inherit' });
+  execSync(`"${ollamaPath}" pull llama3.1`, { stdio: 'inherit' });
   
   console.log('\n✅ Setup complete!\n');
   console.log('You can now run:\n');
