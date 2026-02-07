@@ -6,6 +6,10 @@ echo.
 echo 🦙 Starting Ollama server for MediBuddy...
 echo.
 
+echo Pulling required model: phi3:mini
+ollama pull phi3:mini
+
+echo Launching Ollama server
 ollama serve
 
 if errorlevel 1 (

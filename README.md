@@ -5,7 +5,7 @@ cd "C:\Users\Siddhartha\AppData\Local\Programs\Ollama"; .\ollama.exe serve
 Ollama model setup
 - Ensure the better local model is installed:
 	- In a separate terminal: `cd "C:\Users\Siddhartha\AppData\Local\Programs\Ollama"`
-	- Pull the model: `./ollama.exe pull llama3.1`
+	- Pull the model: `./ollama.exe pull phi3:mini`
 	- Leave `./ollama.exe serve` running while you use the app
 
 Small Node + Express app demonstrating caregiver registration and login using SQLite and session-based auth.
