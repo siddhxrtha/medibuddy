@@ -710,34 +710,18 @@
         const indicator = document.getElementById('typingIndicator');
         if (indicator) indicator.remove();
 
-        // Add AI response with typewriter effect
+        // Add AI response immediately (typewriter delay removed for faster UX)
         const aiMsgDiv = document.createElement('div');
         aiMsgDiv.className = 'ai-message';
         aiMsgDiv.innerHTML = `
           <div class="ai-avatar">✨</div>
           <div class="ai-bubble">
-            <p id="typewriterText"></p>
+            <p></p>
           </div>
         `;
         aiChatMessages.appendChild(aiMsgDiv);
         aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
-
-        // Typewriter effect
-        const textElement = document.getElementById('typewriterText');
-        const text = data.response || 'Sorry, I encountered an error. Please try again.';
-        let index = 0;
-        
-        function typeWriter() {
-          if (index < text.length) {
-            textElement.textContent += text.charAt(index);
-            index++;
-            aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
-            setTimeout(typeWriter, 15);
-          } else {
-            textElement.removeAttribute('id');
-          }
-        }
-        typeWriter();
+        aiMsgDiv.querySelector('p').textContent = data.response || 'Sorry, I encountered an error. Please try again.';
 
       } catch (error) {
         console.error('AI chat error:', error);
