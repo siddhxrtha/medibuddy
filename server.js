@@ -7,8 +7,15 @@ const rateLimit = require('express-rate-limit');
 const authRoutes = require('./routes/auth');
 const aiRoutes = require('./routes/ai');
 const scheduleRoutes = require('./routes/schedules');
+const elderlyRoutes = require('./routes/elderly');
+const medicationRoutes = require('./routes/medications');
+const confirmationRoutes = require('./routes/confirmations');
 const db = require('./db');
 const { initScheduleTable } = require('./models/scheduleModel');
+const { initElderlyTable } = require('./models/elderlyModel');
+const { initMedicationTable } = require('./models/medicationModel');
+const { initConfirmationTable } = require('./models/confirmationModel');
+const { initReminderTable } = require('./models/reminderModel');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -41,6 +48,9 @@ app.use('/api/auth', (req, res, next) => {
 // Mount AI assistant routes
 app.use('/api/ai', aiRoutes);
 app.use(scheduleRoutes);
+app.use(elderlyRoutes);
+app.use(medicationRoutes);
+app.use(confirmationRoutes);
 
 // Endpoint for front-end to check current session / user
 app.get('/api/auth/me', (req, res) => {
@@ -92,7 +102,11 @@ app.use((err, req, res, next) => {
 
 // Initialize DB and start
 db.init().then(() => {
-  initScheduleTable(); // Initialize medication schedule table
+  initElderlyTable(); // Caregiver -> many elderly profiles
+  initMedicationTable(); // Elderly -> many medications
+  initScheduleTable(); // Medication schedules
+  initReminderTable(); // Reminders / notifications
+  initConfirmationTable(); // Confirmations / adherence history
   app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
 }).catch(err => {
   console.error('Failed to initialize DB', err);

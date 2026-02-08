@@ -82,7 +82,7 @@ if (registerForm) {
           });
           const loginData = await loginRes.json();
           if (loginRes.ok) {
-            window.location.href = '/dashboard';
+            window.location.href = '/profile-select.html';
           } else {
             showToast('Account created! Please log in.', 'info', 'Account Ready');
             setTimeout(() => window.location.href = '/login.html', 1500);
@@ -116,7 +116,7 @@ if (loginForm) {
       // success
       showToast('Logging you in...', 'success', 'Welcome');
       setTimeout(() => {
-        window.location.href = '/dashboard';
+        window.location.href = '/profile-select.html';
       }, 800);
     } catch (err) {
       showToast('Network error. Try again later.', 'danger', 'Connection Error');

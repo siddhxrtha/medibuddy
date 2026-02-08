@@ -56,6 +56,14 @@
       <div class="mb-4 text-center text-md-start">
         <h2 id="welcome" class="fw-bold mb-2">Welcome Back!</h2>
         <p class="text-muted mb-0">Monitor your loved one's medication adherence in real-time</p>
+        <div class="mt-3 d-flex flex-wrap align-items-center gap-2">
+          <label for="elderlySelect" class="form-label mb-0 fw-semibold">Active Elderly Profile</label>
+          <select id="elderlySelect" class="form-select" style="max-width: 260px;">
+            <option value="">Loading profiles...</option>
+          </select>
+          <button class="btn btn-outline-primary btn-sm" id="addElderlyBtn">Add Profile</button>
+          <a class="btn btn-outline-secondary btn-sm" href="/profile-select.html">Switch Profiles</a>
+        </div>
       </div>
 
       <!-- Arduino Device Connection Section -->
@@ -293,6 +301,46 @@
     </div>
   </div>
 
+  <!-- Elderly Profile Modal -->
+  <div class="modal fade" id="elderlyModal" tabindex="-1" role="dialog" aria-labelledby="elderlyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="elderlyModalLabel"><i class="bi bi-person-plus-fill me-2"></i>Add Elderly Profile</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="elderlyForm">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="elderlyName" class="form-label">Full Name *</label>
+                <input type="text" class="form-control" id="elderlyName" placeholder="e.g., Margaret Lee" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="elderlyAge" class="form-label">Age *</label>
+                <input type="number" class="form-control" id="elderlyAge" min="1" max="120" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="elderlyRelationship" class="form-label">Relationship *</label>
+                <input type="text" class="form-control" id="elderlyRelationship" placeholder="e.g., mother" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="elderlyNotes" class="form-label">Notes / Medical Conditions</label>
+                <input type="text" class="form-control" id="elderlyNotes" placeholder="e.g., diabetes, hypertension">
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="saveElderlyBtn">Save Profile</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Schedules Display Modal -->
   <div class="modal fade" id="viewSchedulesModal" tabindex="-1" role="dialog" aria-labelledby="viewSchedulesLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -374,6 +422,49 @@
     let deviceConnected = false;
     let notificationCount = 0;
     let medicationLog = [];
+    let activeElderlyId = null;
+    const STORAGE_KEYS = {
+      profiles: 'elderlyProfiles',
+      active: 'activeProfileId',
+      schedules: 'medicationSchedulesByProfile'
+    };
+
+    function getProfiles() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEYS.profiles);
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (err) {
+        return [];
+      }
+    }
+
+    function saveProfiles(profiles) {
+      localStorage.setItem(STORAGE_KEYS.profiles, JSON.stringify(profiles));
+    }
+
+    function getActiveProfileId() {
+      return localStorage.getItem(STORAGE_KEYS.active);
+    }
+
+    function setActiveProfileId(id) {
+      localStorage.setItem(STORAGE_KEYS.active, String(id));
+      activeElderlyId = String(id);
+    }
+
+    function getSchedulesMap() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEYS.schedules);
+        const parsed = raw ? JSON.parse(raw) : {};
+        return parsed && typeof parsed === 'object' ? parsed : {};
+      } catch (err) {
+        return {};
+      }
+    }
+
+    function saveSchedulesMap(map) {
+      localStorage.setItem(STORAGE_KEYS.schedules, JSON.stringify(map));
+    }
 
     // Fetch current user
     fetch('/api/auth/me', { credentials: 'include' })
@@ -392,6 +483,7 @@
         document.getElementById('userAvatar').textContent = firstChar;
         
         initializeDashboard();
+        loadElderlyProfiles();
       })
       .catch(() => window.location.href = '/login.html');
 
@@ -415,6 +507,41 @@
       
       // Show reminder for next dose
       showReminder('18:00');
+    }
+
+    async function loadElderlyProfiles() {
+      const select = document.getElementById('elderlySelect');
+      if (!select) return;
+
+      const profiles = getProfiles();
+      const storedActive = getActiveProfileId();
+
+      select.innerHTML = '';
+      if (!profiles.length) {
+        select.innerHTML = '<option value="">No profiles yet</option>';
+        activeElderlyId = null;
+        window.location.href = '/profile-select.html';
+        return;
+      }
+
+      profiles.forEach(profile => {
+        const option = document.createElement('option');
+        option.value = profile.id;
+        option.textContent = `${profile.name} (${profile.relationship})`;
+        select.appendChild(option);
+      });
+
+      const fallbackId = profiles[0].id;
+      const chosenId = storedActive || fallbackId;
+      select.value = chosenId;
+      setActiveProfileId(chosenId);
+      loadSchedules();
+    }
+
+    function setActiveElderly(elderlyId) {
+      if (!elderlyId) return;
+      setActiveProfileId(elderlyId);
+      loadSchedules();
     }
 
     // Connect to Arduino Device
@@ -801,6 +928,11 @@
     });
 
     document.getElementById('saveSheduleBtn').addEventListener('click', async () => {
+      if (!activeElderlyId) {
+        alert('Please create and select an elderly profile first.');
+        return;
+      }
+
       const medication_name = document.getElementById('medName').value;
       const dosage = document.getElementById('dosage').value;
       const time = document.getElementById('medTime').value;
@@ -814,53 +946,48 @@
         return;
       }
 
-      try {
-        const response = await fetch('/api/schedules', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            medication_name,
-            dosage,
-            time,
-            frequency,
-            start_date,
-            end_date: end_date || null,
-            notes
-          })
-        });
+      const schedule = {
+        id: Date.now(),
+        medication_name,
+        dosage,
+        time,
+        frequency,
+        start_date,
+        end_date: end_date || null,
+        notes: notes || ''
+      };
 
-        const data = await response.json();
-        if (data.success) {
-          // Reset form
-          document.getElementById('scheduleForm').reset();
-          // Close modal
-          bootstrap.Modal.getInstance(document.getElementById('scheduleModal')).hide();
-          // Show success toast
-          showToast('Medication schedule added successfully! 💊');
-          // Refresh schedules
-          loadSchedules();
-        } else {
-          alert('Error: ' + (data.error || 'Failed to save schedule'));
-        }
-      } catch (error) {
-        console.error('Error saving schedule:', error);
-        alert('Failed to save schedule');
-      }
+      const map = getSchedulesMap();
+      const list = map[activeElderlyId] || [];
+      list.push(schedule);
+      map[activeElderlyId] = list;
+      saveSchedulesMap(map);
+
+      document.getElementById('scheduleForm').reset();
+      bootstrap.Modal.getInstance(document.getElementById('scheduleModal')).hide();
+      showToast('Medication schedule added successfully!');
+      loadSchedules();
     });
 
     async function loadSchedules() {
       try {
-        const response = await fetch('/api/schedules');
-        const data = await response.json();
+        if (!activeElderlyId) {
+          const schedulesList = document.getElementById('schedulesList');
+          schedulesList.innerHTML = '<p class="text-muted text-center">Select an elderly profile to view schedules.</p>';
+          return;
+        }
         const schedulesList = document.getElementById('schedulesList');
 
-        if (!data.schedules || data.schedules.length === 0) {
+        const map = getSchedulesMap();
+        const schedules = map[activeElderlyId] || [];
+
+        if (schedules.length === 0) {
           schedulesList.innerHTML = '<p class="text-muted text-center">No medication schedules yet. Click "Set Medication Schedule" to add one.</p>';
           return;
         }
 
         let html = '<div class="list-group">';
-        data.schedules.forEach(schedule => {
+        schedules.forEach(schedule => {
           html += `
             <div class="list-group-item">
               <div class="d-flex justify-content-between align-items-start">
@@ -891,12 +1018,12 @@
       if (!confirm('Delete this medication schedule?')) return;
 
       try {
-        const response = await fetch(`/api/schedules/${id}`, { method: 'DELETE' });
-        const data = await response.json();
-        if (data.success) {
-          showToast('Schedule deleted');
-          loadSchedules();
-        }
+        const map = getSchedulesMap();
+        const list = map[activeElderlyId] || [];
+        map[activeElderlyId] = list.filter(item => String(item.id) !== String(id));
+        saveSchedulesMap(map);
+        showToast('Schedule deleted');
+        loadSchedules();
       } catch (error) {
         console.error('Error deleting schedule:', error);
         alert('Failed to delete schedule');
@@ -918,6 +1045,46 @@
     
     // Check Ollama status when page loads
     setTimeout(checkOllamaStatus, 1000);
+
+    // Elderly profile actions
+    document.getElementById('addElderlyBtn').addEventListener('click', () => {
+      const elderlyModal = new bootstrap.Modal(document.getElementById('elderlyModal'));
+      elderlyModal.show();
+    });
+
+    document.getElementById('saveElderlyBtn').addEventListener('click', async () => {
+      const full_name = document.getElementById('elderlyName').value;
+      const age = document.getElementById('elderlyAge').value;
+      const relationship = document.getElementById('elderlyRelationship').value;
+      const notes = document.getElementById('elderlyNotes').value;
+
+      if (!full_name || !age || !relationship) {
+        alert('Please fill in all required fields');
+        return;
+      }
+
+      const profiles = getProfiles();
+      const newProfile = {
+        id: Date.now().toString(),
+        name: full_name.trim(),
+        age: Number(age),
+        relationship: relationship.trim(),
+        notes: notes ? notes.trim() : ''
+      };
+
+      profiles.push(newProfile);
+      saveProfiles(profiles);
+
+      document.getElementById('elderlyForm').reset();
+      bootstrap.Modal.getInstance(document.getElementById('elderlyModal')).hide();
+      await loadElderlyProfiles();
+    });
+
+    document.getElementById('elderlySelect').addEventListener('change', async (e) => {
+      const selectedId = e.target.value;
+      if (!selectedId) return;
+      setActiveElderly(selectedId);
+    });
   </script>
 
   <script src="/js/auth.js" defer></script>

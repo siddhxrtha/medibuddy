@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Select Profile - MediBuddy</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/profile-select.css">
+</head>
+<body>
+  <div class="profile-page">
+    <header class="profile-header">
+      <div class="brand">
+        <img src="/assets/img/logo.png" alt="MediBuddy Logo">
+        <span>MediBuddy</span>
+      </div>
+      <button class="btn btn-outline-light btn-sm" id="logoutBtn">Log out</button>
+    </header>
+
+    <main class="profile-content">
+      <h1 class="title">Who are you managing today?</h1>
+      <p class="subtitle">Select a profile to open a tailored dashboard.</p>
+
+      <div class="profiles-grid" id="profilesGrid">
+        <!-- Cards injected by JS -->
+      </div>
+    </main>
+  </div>
+
+  <!-- Add Profile Modal -->
+  <div class="modal fade" id="addProfileModal" tabindex="-1" aria-labelledby="addProfileLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addProfileLabel">Add Elderly Profile</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addProfileForm">
+            <div class="mb-3">
+              <label for="profileName" class="form-label">Full Name *</label>
+              <input type="text" class="form-control" id="profileName" required>
+            </div>
+            <div class="mb-3">
+              <label for="profileAge" class="form-label">Age *</label>
+              <input type="number" class="form-control" id="profileAge" min="1" max="120" required>
+            </div>
+            <div class="mb-3">
+              <label for="profileRelationship" class="form-label">Relationship *</label>
+              <input type="text" class="form-control" id="profileRelationship" required>
+            </div>
+            <div class="mb-3">
+              <label for="profileNotes" class="form-label">Notes / Medical Conditions</label>
+              <input type="text" class="form-control" id="profileNotes">
+            </div>
+          </form>
+          <div class="text-danger small d-none" id="profileError">Name is required.</div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="saveProfileBtn">Save Profile</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/profile-select.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
